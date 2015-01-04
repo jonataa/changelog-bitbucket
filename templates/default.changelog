@@ -1,11 +1,11 @@
-
-<?php foreach ($versions as $version): ?>
-
-  <h1><?= $version['name'] ?> (<?= $version['releaseDate']->format('d/m/Y') ?>)</h1>
-  <?php foreach ($version['issuesByType'] as $issuesByType): ?>
-          <?php foreach ($issuesByType as $issue): ?>
-            <h2><?= $issue['fields']['issuetype']['name'] ?></h2>    
-          <?php endforeach ?>
-  <?php endforeach ?>
-
-<?php endforeach ?>
+{% for version in versions %}
+  <h1>{{ version.name }}</h1>
+  {% for issueType, issues in version.issuesByType %}
+    <h2>{{ issueType }}</h2>
+    <ul>
+    {% for issue in issues %}             
+      <li>[{{ issue.key }}] {{ issue.fields.summary }}</li>
+    {% endfor %}
+    </ul>
+  {% endfor %}
+{% endfor %}

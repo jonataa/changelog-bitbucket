@@ -28,6 +28,7 @@ class ChangelogTest extends \PHPUnit_Framework_TestCase
   public function testRender()
   {
     $output = $this->changelog->render('./templates/default.changelog');    
+    die($output);
   }
 
 }

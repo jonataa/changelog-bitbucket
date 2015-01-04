@@ -1,6 +1,7 @@
 {
     "require": {
-        "phpunit/phpunit": "~4.4"
+        "phpunit/phpunit": "~4.4",
+        "twig/twig": "~1.16"
     },
     "require-dev": {
       "phpdocumentor/phpdocumentor": "2.*"

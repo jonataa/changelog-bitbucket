@@ -119,18 +119,21 @@ class Changelog
    */
   public function render($templateFile)
   {
-    if (!file_exists($templateFile) && !is_readable($template))
-      throw new \InvalidArgumentException("File not exist or It isn't readable", 1);
-      
-    $output = file_get_contents($templateFile);    
+    $output = '';
 
-    $versions = $this->getVersions();
-    if (! empty($versions)) {
+    if (!file_exists($templateFile) && !is_readable($template))
+      throw new \InvalidArgumentException("File not exist or It isn't readable", 1);    
+
+    $loader = new \Twig_Loader_Array(['changelog' => file_get_contents($templateFile)]);
+    $twig   = new \Twig_Environment($loader);
+
+    if (! empty($this->versions)) {
       ob_start();
-      require $templateFile;
+      echo $twig->render('changelog', array('versions' => $this->versions));
       $output = ob_get_contents();
       ob_end_clean();
     }      
+
     return $output;   
   }
 
