@@ -7,9 +7,9 @@ $ composer install
 $ php vendor/bin/phpunit --bootstrap=vendor/autoload.php
 ```
 
-## JIRA API Doc
+## Docs
 
-- (JIRA REST)[https://docs.atlassian.com/jira/REST/latest/]
+- [Jira Doc](https://docs.atlassian.com/jira/REST/latest/)
 
 ## TO DO
 

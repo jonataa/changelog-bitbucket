@@ -2,6 +2,9 @@
     "require": {
         "phpunit/phpunit": "~4.4"
     },
+    "require-dev": {
+      "phpdocumentor/phpdocumentor": "2.*"
+    },
     "autoload": {
       "psr-4": {
         "": "src/"

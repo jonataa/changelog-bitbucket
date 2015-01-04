@@ -2,22 +2,136 @@
 
 namespace Framework;
 
-use Framework\Model\VersionFactory;
-
 class Changelog
 {
 
-  protected $versions;
+  const TPL_SLUG = '{{%s}}';
 
+  /** @var Array Collection with all changelog informations */
+  protected $data;
+
+  /** @var Array Collection with all issues group by released versions */
+  protected $versions = [];
+
+  /**
+   * @param string $data Changelog informations as Json format
+   */
   public function __construct($data)
   {
-    if (isset($data['versions']) && !empty($data['versions']))
-      $this->versions = $data['versions'];
+    $this->data = json_decode($data, true);    
+    $this->versions = $this->groupByVersions($this->getIssues());
   }
 
-  public function getVersions()
+  /**
+   * To get a collection of the issues.
+   * 
+   * @return Array
+   */
+  public function getIssues()
   {
+    return isset($this->data['issues']) ? $this->data['issues'] : [];
+  }
+
+  /**
+   * To get the Jira data as Array Object.
+   * 
+   * @return Array
+   */
+  public function getData()
+  {
+    return $this->data;
+  }
+
+  /**
+   * To get the collection issues group by the released version 
+   * and issues type.
+   * 
+   * @return Array
+   */
+  public function getVersions()
+  {        
     return $this->versions;
   }  
+
+  /**
+   * To group by versions and type all issues
+   * 
+   * @param  Array  $issues Issue collection
+   * @return void
+   */
+  private function groupByVersions(Array $issues)
+  {
+    $versions = [];
+
+    if (empty($issues))
+      throw new InvalidArgumentException('Issues collection is empty');
+      
+    foreach ($issues as $issue) {      
+      if (isset($issue['fields']['fixVersions']) 
+        && !empty($issue['fields']['fixVersions']))         
+      {        
+        foreach ($issue['fields']['fixVersions'] as $version) {          
+          $key      = $version['id'];
+          $metaData = $this->getMetaData($version, $key);
+
+          $issueType = $issue['fields']['issuetype']['name'];
+          $metaData['issuesByType'][$issueType][] = $issue;       
+          $metaData['issues'][] = $issue;   
+          $versions[$key] = $metaData;           
+        }
+      }
+    }
+
+    return $versions;
+  }
+
+  /**
+   * To get the metadata informations of a version
+   * for continue to add the issues to the Collection.
+   * 
+   * @param  Array  $version Version informations 
+   * @param  int    $key     Position in the collection
+   * @return Array           Version metadata informations
+   */
+  private function getMetaData($version, $key)
+  {
+    $metaData = [
+      'self'        => $version['self'],
+      'id'          => $version['id'],
+      'name'        => $version['name'],
+      'archived'    => (bool) $version['archived'],
+      'released'    => (bool) $version['released'],
+      'releaseDate' => \DateTime::createFromFormat(
+        'Y-m-d', $version['releaseDate']
+      ),            
+    ];     
+
+    if (isset($versions[$key]) && $metaData = $versions[$key]);
+
+    return $metaData;
+  }
+
+  /**
+   * To render the Changelog as HTML template
+   * 
+   * @param  string $templateFile Template file
+   * @return string               Changelog output
+   */
+  public function render($templateFile)
+  {
+    if (!file_exists($templateFile) && !is_readable($template))
+      throw new \InvalidArgumentException("File not exist or It isn't readable", 1);
+      
+    $output = file_get_contents($templateFile);    
+
+    $versions = $this->getVersions();
+    if (! empty($versions)) {
+      ob_start();
+      require $templateFile;
+      $output = ob_get_contents();
+      ob_end_clean();
+    }      
+    return $output;   
+  }
 
 }
