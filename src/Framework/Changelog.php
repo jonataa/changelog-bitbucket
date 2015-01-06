@@ -64,25 +64,52 @@ class Changelog
     $versions = [];
 
     if (empty($issues))
-      throw new InvalidArgumentException('Issues collection is empty');
-      
+      throw new InvalidArgumentException('Issues collection is empty');        
+
     foreach ($issues as $issue) {      
       if (isset($issue['fields']['fixVersions']) 
         && !empty($issue['fields']['fixVersions']))         
       {        
         foreach ($issue['fields']['fixVersions'] as $version) {          
-          $key      = $version['id'];
-          $metaData = $this->getMetaData($version, $key);
+          if ($this->isReleased($version)) {
+            $key      = $version['id'];          
+            $metaData = $this->getMetaData($version, $key);
 
-          $issueType = $issue['fields']['issuetype']['name'];
-          $metaData['issuesByType'][$issueType][] = $issue;       
-          $metaData['issues'][] = $issue;   
-          $versions[$key] = $metaData;           
+            $issueType = $issue['fields']['issuetype']['name'];
+            $metaData['issuesByType'][$issueType][] = $issue;       
+            $metaData['issues'][] = $issue;   
+            $versions[$key] = $metaData;
+          }          
         }
       }
     }
 
+    usort($versions, 'self::orderByReleasedDateDesc');
+
     return $versions;
+  }
+
+  /**
+   * Order by descending order the release date
+   * 
+   * @param  [type] $a
+   * @param  [type] $b
+   * @return int
+   */
+  private static function orderByReleasedDateDesc($a, $b) 
+  {    
+    return $a['releaseDate'] > $b['releaseDate'] ? -1 : 1;
+  }
+
+  /**
+   * Check if the version was released
+   *
+   * @param $version Version info
+   * @return boolean
+   */
+  public function isReleased($version)
+  {
+    return isset($version['released']) && $version['released'];
   }
 
   /**
@@ -100,11 +127,11 @@ class Changelog
       'id'          => $version['id'],
       'name'        => $version['name'],
       'archived'    => (bool) $version['archived'],
-      'released'    => (bool) $version['released'],
-      'releaseDate' => \DateTime::createFromFormat(
-        'Y-m-d', $version['releaseDate']
-      ),            
+      'released'    => (bool) $version['released'],            
     ];     
+
+    if (isset($version['releaseDate']))
+      $metaData['releaseDate'] = \DateTime::createFromFormat('Y-m-d', $version['releaseDate']);
 
     if (isset($versions[$key]) && $metaData = $versions[$key]);
 

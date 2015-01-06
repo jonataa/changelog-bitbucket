@@ -17,13 +17,13 @@ class ChangelogCommand extends Command
   {
     $this
         ->setName('make')
-        ->setDescription('Generate the HTML changelog file from JIRA API')        
+        ->setDescription('Print the HTML changelog file from JIRA API')        
     ;
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
     {                
-        $data = file_get_contents("php://stdin");
+        $data = file_get_contents("php://stdin");        
         
         $changelog = new Changelog($data);
         $html = $changelog->render('./templates/default.changelog'); 

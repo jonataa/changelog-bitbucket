@@ -3,7 +3,7 @@
 ## Basic Usage
 
 ```shell
-$ cat tests/mockresponses/issues.json | php src/application.php make > output.html
+$ curl -u <username>:<password> -X GET -H "Content-Type: application/json" https://localhost:8080/jira/rest/api/2/search | php src/application.php make > changelog.html
 ```
 
 ## Tests
@@ -28,6 +28,5 @@ $ php vendor/bin/phpunit --bootstrap=vendor/autoload.php
 
 - Build as a CLI tool using Symfony Console
 - Output a HTML file with changelog informations
-- Connect to JIRA API using the Basic Authentication
 - Import the Issue informations from JIRA API
 - Build .phar
