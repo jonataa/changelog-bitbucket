@@ -96,7 +96,7 @@ class Changelog
    * @param  [type] $b
    * @return int
    */
-  private static function orderByReleasedDateDesc($a, $b) 
+  public static function orderByReleasedDateDesc($a, $b) 
   {    
     return $a['releaseDate'] > $b['releaseDate'] ? -1 : 1;
   }
@@ -144,7 +144,7 @@ class Changelog
    * @param  string $templateFile Template file
    * @return string               Changelog output
    */
-  public function render($templateFile)
+  public function render($templateFile = './templates/default.twig')
   {
     $output = '';
 

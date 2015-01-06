@@ -1,0 +1,11 @@
+{% for version in versions %}
+  <h1>{{ version.name }} ({{ version.releaseDate.format('d/m/Y') }})</h1>
+  {% for issueType, issues in version.issuesByType %}
+    <h2>{{ issueType }}</h2>
+    <ul>
+    {% for issue in issues %}             
+      <li>[{{ issue.key }}] {{ issue.fields.summary }}</li>
+    {% endfor %}
+    </ul>
+  {% endfor %}
+{% endfor %}

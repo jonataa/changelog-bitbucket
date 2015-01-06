@@ -1,0 +1,18 @@
+{
+  "chmod": "0755",
+  "directories": ["src", "templates"],
+  "files": [
+    "LICENSE"
+  ],
+  "finder": [
+    {
+      "name": ["*.php", "*.twig"],
+      "exclude": ["tests"],
+      "in": "vendor"
+    }
+  ],  
+  "git-version": "git_version",
+  "main": "src/application.php",
+  "output": "bin/changelog.phar",
+  "stub": true
+}

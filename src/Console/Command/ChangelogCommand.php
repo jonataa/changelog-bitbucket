@@ -26,7 +26,7 @@ class ChangelogCommand extends Command
         $data = file_get_contents("php://stdin");        
         
         $changelog = new Changelog($data);
-        $html = $changelog->render('./templates/default.changelog'); 
+        $html = $changelog->render('./templates/default.twig'); 
 
         $output->writeln($html);
     }

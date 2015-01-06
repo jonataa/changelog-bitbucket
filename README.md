@@ -23,10 +23,11 @@ $ php vendor/bin/phpunit --bootstrap=vendor/autoload.php
 - Convert the JSON response to Objects Model
 - Generate the HTML Template from Objects Model
 - Support the Twig templates 
+- Build as a CLI tool using Symfony Console
+- Print a HTML file with changelog informations
+- Order by descending order the Release date
 
 ## TO DO
 
-- Build as a CLI tool using Symfony Console
-- Output a HTML file with changelog informations
-- Import the Issue informations from JIRA API
 - Build .phar
+- Import the Issue informations from JIRA API using cURL tool

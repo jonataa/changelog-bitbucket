@@ -25,10 +25,20 @@ class ChangelogTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals('1.16.1', current($versions)['name']);
   }
 
+  /** @todo */
   public function testRender()
   {
-    $output = $this->changelog->render('./templates/default.changelog');    
-    die($output);
+    $output = $this->changelog->render();
+    //die($output);
+  }
+
+  public function testOrderByReleasedDateDesc()
+  {
+    $a['releaseDate'] = \DateTime::createFromFormat('Y-m-d', '2015-01-10');
+    $b['releaseDate'] = \DateTime::createFromFormat('Y-m-d', '2015-02-10');
+    
+    $this->assertEquals(1, Changelog::orderByReleasedDateDesc($a, $b));
+
   }
 
 }
