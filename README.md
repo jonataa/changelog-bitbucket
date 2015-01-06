@@ -1,5 +1,11 @@
 # Changelog JIRA
 
+## Basic Usage
+
+```shell
+$ cat tests/mockresponses/issues.json | php src/application.php make > output.html
+```
+
 ## Tests
 
 ```shell
@@ -11,12 +17,17 @@ $ php vendor/bin/phpunit --bootstrap=vendor/autoload.php
 
 - [Jira Doc](https://docs.atlassian.com/jira/REST/latest/)
 
-## TO DO
+
+## Implemented
 
 - Convert the JSON response to Objects Model
 - Generate the HTML Template from Objects Model
 - Support the Twig templates 
-- Output a HTML file with changelog informations
+
+## TO DO
+
 - Build as a CLI tool using Symfony Console
+- Output a HTML file with changelog informations
 - Connect to JIRA API using the Basic Authentication
-- Import the Versions from JIRA API
+- Import the Issue informations from JIRA API
+- Build .phar
