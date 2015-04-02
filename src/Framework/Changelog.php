@@ -8,7 +8,7 @@ class Changelog
   const TPL_SLUG = '{{%s}}';
 
   /** @var Array Collection with all changelog informations */
-  protected $data;
+  protected $data = [];
 
   /** @var Array Collection with all issues group by released versions */
   protected $versions = [];
@@ -29,7 +29,7 @@ class Changelog
    */
   public function getIssues()
   {
-    return isset($this->data['issues']) ? $this->data['issues'] : [];
+    return $this->data['issues'];
   }
 
   /**
@@ -66,24 +66,25 @@ class Changelog
     if (empty($issues))
       throw new InvalidArgumentException('Issues collection is empty');        
 
-    foreach ($issues as $issue) {      
+    foreach ($issues as $issue) {        
       if (isset($issue['fields']['fixVersions']) 
         && !empty($issue['fields']['fixVersions']))         
       {        
         foreach ($issue['fields']['fixVersions'] as $version) {          
-          if ($this->isReleased($version)) {
-            $key      = $version['id'];          
-            $metaData = $this->getMetaData($version, $key);
-
+          if ($this->isReleased($version)) {            
+            $key       = $version['id'];          
             $issueType = $issue['fields']['issuetype']['name'];
-            $metaData['issuesByType'][$issueType][] = $issue;       
-            $metaData['issues'][] = $issue;   
-            $versions[$key] = $metaData;
-          }          
+
+            if (! isset($versions[$key]['meta']))  
+              $versions[$key]['meta'] = $this->getMetaData($version, $key);                                                    
+
+            $versions[$key]['issuesByType'][$issueType][] = $issue;
+            $versions[$key]['issues'][] = $issue;
+          }
         }
       }
-    }
-
+    }    
+    
     usort($versions, 'self::orderDesc');    
 
     return $versions;
@@ -97,9 +98,9 @@ class Changelog
    * @return int
    */
   public static function orderDesc($a, $b) 
-  {    
-    return $a['releaseDate'] >= $b['releaseDate'] 
-           && $a['name'] >= $b['name']  ? 
+  {        
+    return $a['meta']['releaseDate'] >= $b['meta']['releaseDate'] 
+           && $a['meta']['name'] >= $b['meta']['name']  ? 
            -1 : 
            1;
   }
