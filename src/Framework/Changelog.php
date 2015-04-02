@@ -84,21 +84,24 @@ class Changelog
       }
     }
 
-    usort($versions, 'self::orderByReleasedDateDesc');
+    usort($versions, 'self::orderDesc');    
 
     return $versions;
   }
 
   /**
-   * Order by descending order the release date
+   * Order by descending order the release date and version name
    * 
    * @param  [type] $a
    * @param  [type] $b
    * @return int
    */
-  public static function orderByReleasedDateDesc($a, $b) 
+  public static function orderDesc($a, $b) 
   {    
-    return $a['releaseDate'] > $b['releaseDate'] ? -1 : 1;
+    return $a['releaseDate'] >= $b['releaseDate'] 
+           && $a['name'] >= $b['name']  ? 
+           -1 : 
+           1;
   }
 
   /**

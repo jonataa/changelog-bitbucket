@@ -34,10 +34,12 @@ class ChangelogTest extends \PHPUnit_Framework_TestCase
 
   public function testOrderByReleasedDateDesc()
   {
-    $a['releaseDate'] = \DateTime::createFromFormat('Y-m-d', '2015-01-10');
-    $b['releaseDate'] = \DateTime::createFromFormat('Y-m-d', '2015-02-10');
+    $a['name']        = '1.16';
+    $a['releaseDate'] = \DateTime::createFromFormat('Y-m-d', '2015-01-10');    
+    $b['name']        = '1.16.1';
+    $b['releaseDate'] = \DateTime::createFromFormat('Y-m-d', '2015-02-10');        
     
-    $this->assertEquals(1, Changelog::orderByReleasedDateDesc($a, $b));
+    $this->assertEquals(1, Changelog::orderDesc($a, $b));    
 
   }
 

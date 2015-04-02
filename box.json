@@ -13,6 +13,6 @@
   ],  
   "git-version": "git_version",
   "main": "src/application.php",
-  "output": "bin/changelog.phar",
+  "output": "bin/changelog-@git_version@.phar",
   "stub": true
 }
