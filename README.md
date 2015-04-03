@@ -4,7 +4,7 @@
 
 ```shell
 $ curl -u <username>:<password> -X GET -H "Content-Type: application/json" \
-https://<myurl>/rest/api/2/search | php src/application.php make > changelog.html
+https://<myurl>/rest/api/2/search | php src/application.php make --output changelog.html
 ```
 
 ## Help Tool
