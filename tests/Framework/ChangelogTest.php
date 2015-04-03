@@ -28,7 +28,7 @@ class ChangelogTest extends \PHPUnit_Framework_TestCase
   /** @todo */
   public function testRender()
   {
-    $output = $this->changelog->render();    
+    $output = $this->changelog->render('./templates/default.twig');
   }
 
   public function testOrderByReleasedDateDesc()

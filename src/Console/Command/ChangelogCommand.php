@@ -25,23 +25,31 @@ class ChangelogCommand extends Command
             'If prefer, you can set up an output file diferent of changelog.html',
             './changelog.html'
           )
+        ->addOption(
+            'template', 
+            null, 
+            InputOption::VALUE_OPTIONAL,
+            'If prefer, you can set up an template file diferent of templates/default.twig',
+            './templates/default.twig'
+          )
     ;
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {                
     $outputFile = $input->getOption('output');
+    $template = $input->getOption('template');    
 
     $data = file_get_contents("php://stdin");
     
     $changelog = new Changelog($data);
-    $html = $changelog->render('./templates/template1.twig');
+    $html = $changelog->render($template);
     $isWritten = $changelog->createFile($outputFile, $html);
 
     if (! $isWritten)
       throw new \Exception("File '$outputFile' was not written correctly");
       
-    $output->writeln('Congratulations! You file was processed correctly ;)');
+    $output->writeln("Congratulations! Your '$outputFile' was generated correctly :)");
   }
 
 }

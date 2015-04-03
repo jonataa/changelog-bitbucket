@@ -148,15 +148,14 @@ class Changelog
    * @param  string $templateFile Template file
    * @return string               Changelog output
    */
-  public function render(
-    $templateFile = './templates/default.twig'
-  ) {
+  public function render($templateFile, $twigLoaderFileSystem = './') 
+  {
     $output = '';
-    
-    if (! (file_exists($templateFile) && is_readable($templateFile)))
-      throw new \InvalidArgumentException("File not exist or It isn't readable", 1);    
 
-    $loader = new \Twig_Loader_Filesystem('./');      
+    if (! (file_exists($templateFile) && is_readable($templateFile)))
+      throw new \InvalidArgumentException("File '$templateFile' not exist or It isn't readable", 1);    
+
+    $loader = new \Twig_Loader_Filesystem($twigLoaderFileSystem);      
     $twig   = new \Twig_Environment($loader);
 
     if (! empty($this->versions)) {
