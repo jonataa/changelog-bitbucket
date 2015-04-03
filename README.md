@@ -1,4 +1,5 @@
-# Changelog JIRA
+# Changelog JIRA [![Build Status](https://travis-ci.org/jonataa/changelog-jira.svg?branch=master)](https://travis-ci.org/jonataa/changelog-jira)
+This project is an automation CLI Tool for generate the HTML Changelog file from [JIRA API](https://docs.atlassian.com/jira/REST/latest/). 
 
 ## Basic Usage
 
@@ -34,7 +35,7 @@ Available commands:
 
 ```shell
 $ composer install
-$ php vendor/bin/phpunit --bootstrap=vendor/autoload.php
+$ php vendor/bin/phpunit
 ```
 
 ## Docs
