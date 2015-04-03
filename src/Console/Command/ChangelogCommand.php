@@ -17,18 +17,31 @@ class ChangelogCommand extends Command
   {
     $this
         ->setName('make')
-        ->setDescription('Print the HTML changelog file from JIRA API')        
+        ->setDescription('Create the HTML changelog file from JIRA API (default: output.html)')
+        ->addOption(
+            'output', 
+            null, 
+            InputOption::VALUE_OPTIONAL,
+            'If prefer, you can set up an output file diferent of changelog.html',
+            './changelog.html'
+          )
     ;
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
-    {                
-        $data = file_get_contents("php://stdin");        
-        
-        $changelog = new Changelog($data);
-        $html = $changelog->render('./templates/mederi.twig'); 
+  {                
+    $outputFile = $input->getOption('output');
 
-        $output->writeln($html);
-    }
+    $data = file_get_contents("php://stdin");
+    
+    $changelog = new Changelog($data);
+    $html = $changelog->render('./templates/template1.twig');
+    $isWritten = $changelog->createFile($outputFile, $html);
+
+    if (! $isWritten)
+      throw new \Exception("File '$outputFile' was not written correctly");
+      
+    $output->writeln('Congratulations! You file was processed correctly ;)');
+  }
 
 }

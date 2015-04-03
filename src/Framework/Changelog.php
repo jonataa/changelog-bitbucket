@@ -148,11 +148,12 @@ class Changelog
    * @param  string $templateFile Template file
    * @return string               Changelog output
    */
-  public function render($templateFile = './templates/default.twig')
-  {
+  public function render(
+    $templateFile = './templates/default.twig'
+  ) {
     $output = '';
-
-    if (!file_exists($templateFile) && !is_readable($template))
+    
+    if (! (file_exists($templateFile) && is_readable($templateFile)))
       throw new \InvalidArgumentException("File not exist or It isn't readable", 1);    
 
     $loader = new \Twig_Loader_Filesystem('./');      
@@ -166,6 +167,19 @@ class Changelog
     }      
 
     return $output;   
+  }
+
+  /**
+   * Write a text in a file
+   * 
+   * @param  string $filename Filename path
+   * @param  string $content  An string or text
+   * @return bool   TRUE if was write correctly or FALSE if not
+   */
+  public function createFile($filename, $content)
+  {
+    $r = file_put_contents($filename, $content);
+    return $r === strlen($content);
   }
 
 }

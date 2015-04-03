@@ -3,13 +3,34 @@
 ## Basic Usage
 
 ```shell
-$ curl -u <username>:<password> -X \
-GET -H "Content-Type: application/json" \
-https://<myurl>/rest/api/2/search | \
-php src/application.php make > changelog.html
+$ curl -u <username>:<password> -X GET -H "Content-Type: application/json" \
+https://<myurl>/rest/api/2/search | php src/application.php make > changelog.html
 ```
 
-## Tests
+## Help Tool
+
+```shell
+Changelog Jira Tool
+
+Usage:
+ [options] command [arguments]
+
+Options:
+ --help (-h)           Display this help message.
+ --quiet (-q)          Do not output any message.
+ --verbose (-v|vv|vvv) Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug.
+ --version (-V)        Display this application version.
+ --ansi                Force ANSI output.
+ --no-ansi             Disable ANSI output.
+ --no-interaction (-n) Do not ask any interactive question.
+
+Available commands:
+ help   Displays help for a command
+ list   Lists commands
+ make   Create the HTML changelog file from JIRA API (default: changelog.html)
+```
+
+## Running the Tests
 
 ```shell
 $ composer install
@@ -19,7 +40,6 @@ $ php vendor/bin/phpunit --bootstrap=vendor/autoload.php
 ## Docs
 
 - [Jira Doc](https://docs.atlassian.com/jira/REST/latest/)
-
 
 ## Implemented
 
@@ -33,4 +53,3 @@ $ php vendor/bin/phpunit --bootstrap=vendor/autoload.php
 ## TO DO
 
 - Build .phar
-- Import the Issue informations from JIRA API using cURL tool
