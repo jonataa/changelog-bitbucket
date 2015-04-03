@@ -1,0 +1,67 @@
+<div id="pagination"></div>
+
+<script type="text/javascript"> 
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var options = {
+      container: '#pagination', 
+      item: '.pagination-item', 
+      perPage: {{ perPage }}
+    };
+
+    (function(options) {
+      var container  = options.container;
+      var item       = options.item;
+      var perPage    = options.perPage;
+
+      var items      = document.querySelectorAll(item);    
+      var totalPages = Math.floor(items.length / perPage);
+      var pagination = document.querySelector(container);  
+
+      var start = 0, end = -1;
+      for (var i = 0; i <= totalPages; i++) {    
+
+        start = end + 1, end = start + (perPage-1);
+        if (end > items.length)
+          end = items.length-1;
+        
+        pagination.appendChild(getLink(start, end));
+        if (i != totalPages)
+          pagination.appendChild(getSeparator('{{separator}}'));
+      }
+
+      function getLink(start, end) {
+        var a = document.createElement('a');
+        a.textContent = (i+1);
+        a.setAttribute('href', '#');
+        a.addEventListener('click', getShowItemCallBack(start, end));        
+        return a;
+      }
+
+      function getSeparator(textContent) {
+        var span = document.createElement('span');
+        span.textContent = textContent;
+        return span;
+      }
+
+      function getShowItemCallBack(start, end) {
+        return function() {
+          showItems(start, end)
+        };
+      }
+
+      function showItems(start, end) {
+        hiddenAll(item);
+        for(var i = start; i <= end; i++) {
+          items[i].style.display = "block";
+        }
+      } 
+
+      function hiddenAll(selector) {
+        var elements = document.querySelectorAll(selector);
+        [].forEach.call(elements, function(element) {
+          element.style.display = "none";
+        });    
+      }  
+    })(options);
+  });
+</script>

@@ -1,0 +1,18 @@
+{% set vars = {'perPage': '10', 'separator': ' | '} %}
+
+{% include 'templates/pagination.twig' with vars %}
+
+{% for version in versions %}
+<div class="pagination-item" id="{{version.meta.id}}" style="display: none;">  
+  <h1>Versão {{ version.meta.name }} ({{ version.meta.releaseDate.format('d/m/Y') }})</h1>
+  {% for issueType, issues in version.issuesByType %}
+    <h2>{{ issueType }}</h2>
+    <ul>
+    {% for issue in issues %}             
+      <li>[<a href="https://company.atlassian.net/browse/{{issue.key}}">{{ issue.key }}</a>] {{ issue.fields.summary }}</li>
+    {% endfor %}
+    </ul>
+  {% endfor %}
+  <hr/>
+</div>
+{% endfor %}

@@ -155,12 +155,12 @@ class Changelog
     if (!file_exists($templateFile) && !is_readable($template))
       throw new \InvalidArgumentException("File not exist or It isn't readable", 1);    
 
-    $loader = new \Twig_Loader_Array(['changelog' => file_get_contents($templateFile)]);
+    $loader = new \Twig_Loader_Filesystem('./');      
     $twig   = new \Twig_Environment($loader);
 
     if (! empty($this->versions)) {
       ob_start();
-      echo $twig->render('changelog', array('versions' => $this->versions));
+      echo $twig->render($templateFile, array('versions' => $this->versions));
       $output = ob_get_contents();
       ob_end_clean();
     }      
